@@ -1,0 +1,5 @@
+# TODO
+
+· Implement the builder pattern for making new endpoints, so i can add new features to each endpoint in the future
+
+· Make a real secret for the sessions
