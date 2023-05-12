@@ -22,6 +22,27 @@ APIDocumentation.getInstance().addEndpointDocumentation({
     description: "Get the Database connection status",
 });
 
+MainRouter.getInstance().addRoute(Method.GET, "/api/database-write-test", statusControllers.dbWriteTest);
+APIDocumentation.getInstance().addEndpointDocumentation({
+    method: "GET",
+    endpoint: "/api/database-write-test",
+    description: "Create a database item for testing",
+});
+
+MainRouter.getInstance().addRoute(Method.GET, "/api/database-read-test", statusControllers.dbReadTest);
+APIDocumentation.getInstance().addEndpointDocumentation({
+    method: "GET",
+    endpoint: "/api/database-read-test",
+    description: "Read a database item for testing",
+});
+
+MainRouter.getInstance().addRoute(Method.DELETE, "/api/database-delete-test", statusControllers.dbDeleteTest);
+APIDocumentation.getInstance().addEndpointDocumentation({
+    method: "DELETE",
+    endpoint: "/api/database-delete-test",
+    description: "Delete all table items - test",
+});
+
 MainRouter.getInstance().addRoute(Method.GET, "/api/docs", (req: Request, res: Response) => {
     res.json(APIDocumentation.getInstance().getAllEndpointDocumentations());
 });

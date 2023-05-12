@@ -3,3 +3,9 @@
 · Implement the builder pattern for making new endpoints, so i can add new features to each endpoint in the future
 
 · Make a real secret for the sessions
+
+· SQL script runner
+
+    i want to make something that runs all SQL scripts i have in a folder in order, and each file runs as a single 
+    transaction so it fails and rollback if something didint go well. I will need to keep track of the already 
+    sucessfully runned scripts.

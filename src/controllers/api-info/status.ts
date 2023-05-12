@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { db } from "../../config/db-connection";
+import { Database } from "../../core/Database";
 
-export const apiStatus = async (req: Request, res: Response) => {
+export async function apiStatus (req: Request, res: Response) : Promise<void> {
     try {
         const status = {
             status: "OK"
@@ -12,10 +12,10 @@ export const apiStatus = async (req: Request, res: Response) => {
     }
 };
 
-export const dbStatus = async (req: Request, res: Response) => {
+export async function dbStatus (req: Request, res: Response) : Promise<void> {
     try {
         
-        db.query("SELECT 1")
+        Database.getInstance().runQuery("SELECT 1")
             .then(() => {
                 console.log("Connected to the database");
                 res.status(200).json({
@@ -34,7 +34,52 @@ export const dbStatus = async (req: Request, res: Response) => {
     }
 };
 
-export function version (req: Request, res: Response) : void {
+export async function dbWriteTest (req: Request, res: Response) : Promise<void> {
+    try {
+        
+        const db = Database.getInstance();
+
+        await db.runQuery("CREATE TABLE IF NOT EXISTS test_table ( id SERIAL PRIMARY KEY,name VARCHAR(255),age INT);");
+
+        const addItemQuery: string = 'INSERT INTO test_table (name, age) VALUES ($1, $2)';
+
+        await db.runQuery(addItemQuery, ["Jonh Doe", 25]);
+        await db.runQuery(addItemQuery, ["Jane Doe", 23]);
+        await db.runQuery(addItemQuery, ["Bobby Smith", 31]);
+        await db.runQuery(addItemQuery, ["Anna Thomas", 40]);
+        
+        res.status(200).json({ message: "All queries executed" });
+
+    } catch (err) {
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+export async function dbReadTest (req: Request, res: Response) : Promise<void> {
+    try {
+        
+        const db = Database.getInstance();
+        const result = await db.runQuery("SELECT * FROM test_table;");
+        res.status(200).json({ results: result.rows });
+
+    } catch (err) {
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+export async function dbDeleteTest (req: Request, res: Response) : Promise<void> {
+    try {
+        
+        const db = Database.getInstance();
+        await db.runQuery("DELETE FROM test_table;");
+        res.status(200).json({ message: "Table cleaned" });
+
+    } catch (err) {
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+export async function version (req: Request, res: Response) : Promise<void> {
     try {
         res.status(200).json({
             version: "v1.0.0"
