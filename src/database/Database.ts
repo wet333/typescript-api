@@ -41,4 +41,20 @@ export class Database {
         }
     }
 
+    public createMigrationsTable(): void {
+        try {
+            
+            this.connectionPool.query(`
+                CREATE TABLE IF NOT EXISTS migrations (
+                    id SERIAL PRIMARY KEY,
+                    name VARCHAR(255) NOT NULL,
+                    executed_at TIMESTAMPTZ DEFAULT NOW()
+                );
+            `).then(() => { console.log("Migration table created") });
+            
+        } catch (error) {
+            throw new Error(`Error initializing migrations tables: ${error}`);
+        }
+    }
+
 }

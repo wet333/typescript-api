@@ -1,7 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session"
-import { router } from "./routes/routes";;
+import { router } from "./routes/routes";import { Database } from "./database/Database";
+;
 
 const PORT = 3000;
 
@@ -17,7 +18,8 @@ app.use(session({
         maxAge: 10 * 60 * 1000,
     },
     rolling: true
-}))
+}));
+Database.getInstance().createMigrationsTable();
 
 // Routes
 app.use("/api", router);
