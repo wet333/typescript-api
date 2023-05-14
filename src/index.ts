@@ -1,9 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
-
-import { router } from "./routes/routes";
-import session from "express-session";
-import { MainRouter } from "./core/MainRouter";
+import session from "express-session"
+import { router } from "./routes/routes";;
 
 const PORT = 3000;
 
@@ -22,7 +20,6 @@ app.use(session({
 }))
 
 // Routes
-app.use("/", MainRouter.getInstance().getRouter());
 app.use("/api", router);
 
 app.listen(PORT, () => {

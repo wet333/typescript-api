@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { Database } from "../../core/Database";
+import { Database } from "../../database/Database";
 
 export async function apiStatus (req: Request, res: Response) : Promise<void> {
     try {
