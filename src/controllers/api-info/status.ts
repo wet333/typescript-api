@@ -79,6 +79,17 @@ export async function dbDeleteTest (req: Request, res: Response) : Promise<void>
     }
 };
 
+export async function runMigrations(req: Request, res: Response): Promise<void> {
+    try {
+        Database.getInstance().runMigrations();
+        res.json({
+            message: "Migrations executed successfully",
+        })
+    } catch (err) {
+        res.status(500).send('Error: while running migrations, ' + err );
+    }
+}
+
 export async function version (req: Request, res: Response) : Promise<void> {
     try {
         res.status(200).json({

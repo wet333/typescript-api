@@ -9,6 +9,7 @@ export const router = Router();
 // Routes
 router.get("/status/api", statusControllers.apiStatus);
 router.get("/status/database", statusControllers.dbStatus);
+router.get("/run-migrations", statusControllers.runMigrations);
 
 router.get("/test/database/write", statusControllers.dbWriteTest);
 router.get("/test/database/read", statusControllers.dbReadTest);
