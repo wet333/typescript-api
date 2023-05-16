@@ -3,16 +3,17 @@ import bodyParser from "body-parser";
 import session from "express-session"
 import { router } from "./routes/routes";import { Database } from "./database/Database";
 import { errorMiddleware } from "./middleware/errorHandling";
-;
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const PORT = 3000;
-
 const app = express();
 
 // Middlewares
 app.use(bodyParser.json());
 app.use(session({
-    secret: "adjs8shyf98s7adtf9gas87dft9as8d7f9as8d7f6as98df7t6sda98f7s6da9f87satyd9s87adfas9d87ftsa9d87ts9d87tasd8f7t",
+    secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: true,
     cookie: {
