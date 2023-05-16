@@ -5,5 +5,5 @@ import { login } from "./login";
 export {
     login,
     logout,
-    register
+    register,
 }

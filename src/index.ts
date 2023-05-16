@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session"
 import { router } from "./routes/routes";import { Database } from "./database/Database";
+import { errorMiddleware } from "./middleware/errorHandling";
 ;
 
 const PORT = 3000;
@@ -23,6 +24,9 @@ Database.getInstance().createMigrationsTable();
 
 // Routes
 app.use("/api", router);
+
+// Error handling
+app.use(errorMiddleware);
 
 app.listen(PORT, () => {
     console.log("Server listening at port: " + PORT);
