@@ -1,7 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import e, { NextFunction, Request, Response } from "express";
 import * as bcrypt from "bcrypt";
-import { ControllerError, ValidationError } from "../../models/errors/errorTypes";
+import { ValidationError } from "../../models/errors/errorTypes";
 import { isStringLengthBetween, isValidEmail, isValidPassword } from "../../utils/validationUtils";
+import { Database } from "../../database/Database";
 
 export async function register (req: Request, res: Response, next: NextFunction) {
 
@@ -24,14 +25,31 @@ export async function register (req: Request, res: Response, next: NextFunction)
             throw new ValidationError(req, "Invalid client data, failed to register user", validationErrors);
         }
 
-        console.log(req.body);
-
+        const db = Database.getInstance();
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // TODO: user registration in DB
+        // User already registered?
+        const result = await db.runQuery(
+            "SELECT * FROM user_credentials WHERE username = $1 OR email = $2",
+            [username, email]
+        );
+        const isNewUser = result.rows.length > 0 ? false : true;
 
-        res.json({ ...req.body, password: hashedPassword });
+        if (isNewUser) {
+            // Register new user
+            await db.runQuery(
+                "INSERT INTO user_credentials (username, password, email) VALUES ($1, $2, $3);",
+                [username, hashedPassword, email]    
+            );
+        } else {
+            throw new ValidationError(req, "Invalid username or email", validationErrors);
+        }        
+
+        res.json({ 
+            status: "Success",
+            message: "User " + username + " registered.",
+        });
 
     } catch (error) {
         next(error);
