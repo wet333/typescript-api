@@ -76,3 +76,8 @@ export class ValidationError extends Error implements GeneralError {
         return this.statusCode;
     }
 }
+
+export interface ValidationErrorItem {
+    field: string;
+    message: string;
+}

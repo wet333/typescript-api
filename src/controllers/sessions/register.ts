@@ -1,4 +1,4 @@
-import e, { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as bcrypt from "bcrypt";
 import { ValidationError } from "../../models/errors/errorTypes";
 import { isStringLengthBetween, isValidEmail, isValidPassword } from "../../utils/validationUtils";
@@ -43,7 +43,7 @@ export async function register (req: Request, res: Response, next: NextFunction)
                 [username, hashedPassword, email]    
             );
         } else {
-            throw new ValidationError(req, "Invalid username or email", validationErrors);
+            throw new ValidationError(req, "Username or email is already taken.", validationErrors);
         }        
 
         res.json({ 

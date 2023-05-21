@@ -38,3 +38,7 @@ export function isValidEmail(email: string) {
     }
     return false;
 }
+
+export function isEmpty(value: any): boolean {
+    return value === null || value === undefined || value === "";
+}
