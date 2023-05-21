@@ -1,10 +1,22 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import { ControllerError } from "../../models/errors/errorTypes";
 
-export const logout = (req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
 
-    const { username, password, email } = req.body;
+    try {
+        
+        req.session.destroy((error) => {
+            if (error) {
+                throw new ControllerError(req, "Error while deleting session, plase try again.");
+            }
+        });
 
-    console.log(req.body);
+        res.json({
+            message: "Logged out"
+        });
+        
+    } catch (error) {
+        next(error);
+    }
 
-    res.json({ ...req.body });
 }
