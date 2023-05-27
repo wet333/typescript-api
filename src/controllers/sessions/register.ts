@@ -3,6 +3,10 @@ import * as bcrypt from "bcrypt";
 import { ValidationError } from "../../models/errors/errorTypes";
 import { isStringLengthBetween, isValidEmail, isValidPassword } from "../../utils/validationUtils";
 import { Database } from "../../database/Database";
+import { mailer } from "../../utils/nodemailerInstance";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export async function register (req: Request, res: Response, next: NextFunction) {
 
@@ -42,12 +46,32 @@ export async function register (req: Request, res: Response, next: NextFunction)
                 "INSERT INTO user_credentials (username, password, email) VALUES ($1, $2, $3);",
                 [username, hashedPassword, email]    
             );
+
+            const emailTemplate = `
+                <!DOCTYPE html>
+                <html>
+                    <head>
+                        <title>Account Activation</title>
+                    </head>
+                    <body>
+                        <h1>Congratulations!</h1>
+                        <p>Your account with username: <strong>${username}</strong> is activated and ready to use.</p>
+                    </body>
+                </html>
+            `;
+
+            mailer.sendMail({
+                to: email,
+                from: process.env.GMAIL_USER?.toString(),
+                subject: "User Registration",
+                html: emailTemplate,
+            });
+            
         } else {
-            throw new ValidationError(req, "Username or email is already taken.", validationErrors);
+            throw new ValidationError(req, "Username or email is already taken.");
         }        
 
-        res.json({ 
-            status: "Success",
+        res.json({
             message: "User " + username + " registered.",
         });
 
