@@ -1,3 +1,4 @@
+import { getMP3fromYoutube } from './../controllers/yt-downloader/getMP3';
 import { Router } from "express";
 
 // Controllers
@@ -24,3 +25,6 @@ router.delete("/test/database/delete", statusControllers.dbDeleteTest);
 router.post("/auth/login", authController.login);
 router.get("/auth/logout", authController.logout);
 router.post("/auth/register", authController.register);
+
+// Youtube Audio
+router.post("/yt", getMP3fromYoutube);
