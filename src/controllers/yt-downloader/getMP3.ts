@@ -7,12 +7,13 @@ export const getMP3fromYoutube = async (req: Request, res: Response, next: NextF
 	try {
 		
         const postData: { link: string } = req.body;
-        const base64 = await ytGet.downloadVideoAsBase64(postData.link);
+        const base64 = await ytGet.getVideoMP3Base64(postData.link);
 
         if (base64 === null) throw new ControllerError(req, "Cannot get base64 data");
 
 		res.json({
-			base64: base64
+            title: base64.title,
+			base64: base64.base64,
 		});
 
 	} catch (error) {

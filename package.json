@@ -28,7 +28,7 @@
     "nodemailer": "^6.9.2",
     "pg": "^8.10.0",
     "pg-pool": "^3.6.0",
-    "yt-get": "^1.0.8"
+    "yt-get": "^1.1.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
