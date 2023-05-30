@@ -61,4 +61,4 @@ jobs:
             password: ${{ secrets.VPS_PASS }}
             script: |
                 cd ~/api
-                node index.js
+                /root/.nvm/versions/node/v16.18.0/bin/node index.js
