@@ -19,11 +19,8 @@ jobs:
           with:
             node-version: 18
     
-        - name: Install Dependencies
-          run: npm i
-    
-        - name: Install Dependencies
-          run: npm i typescript
+        - name: Install Typescript and Dependencies
+          run: npm run pre-build
 
         - name: Build
           run: npm run build
@@ -61,5 +58,4 @@ jobs:
             password: ${{ secrets.VPS_PASS }}
             script: |
                 cd ~/api
-                ~/.nvm/versions/node/v16.18.0/bin/npm install
-                ~/.nvm/versions/node/v16.18.0/bin/node index.js
+                node index.js
