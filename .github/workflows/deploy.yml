@@ -51,7 +51,7 @@ jobs:
             username: ${{ secrets.VPS_USER }}
             password: ${{ secrets.VPS_PASS }}
             source: "./"
-            target: "/api"
+            target: "~/api"
     
         - name: Restart server
           uses: appleboy/ssh-action@master
@@ -60,5 +60,5 @@ jobs:
             username: ${{ secrets.VPS_USER }}
             password: ${{ secrets.VPS_PASS }}
             script: |
-                cd /api
-                node src/index.js
+                cd ~/api
+                node index.js
