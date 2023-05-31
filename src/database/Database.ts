@@ -5,10 +5,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const user = process.env.DB_USER;
-const password = process.env.DB_PASSWORD;
-const database = process.env.DB_DATABASE;
-const host = process.env.DB_HOST;
+const user = process.env.DB_USER as string;
+const password = process.env.DB_PASSWORD as string;
+const database = process.env.DB_DATABASE as string;
+const host = process.env.DB_HOST as string;
 const port = parseInt(process.env.DB_PORT || "5432", 10);
 
 export class Database {

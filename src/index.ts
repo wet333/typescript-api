@@ -13,7 +13,7 @@ const app = express();
 // Middlewares
 app.use(bodyParser.json());
 app.use(session({
-    secret: process.env.SESSION_SECRET as string,
+    secret: process.env.SESSION_SECRET as string || "as8dsa09d8fysd098sy09fsad09f8syad0f98syad0f98syadf098saydf09s8adyf09s8adyf908asdyf",
     resave: false,
     saveUninitialized: true,
     cookie: {
