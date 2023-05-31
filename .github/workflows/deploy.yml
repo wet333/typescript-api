@@ -69,5 +69,5 @@ jobs:
         script: |
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
-          cd ~/api/dist
-          node index.js
+          cd ~/api
+          node dist/index.js
