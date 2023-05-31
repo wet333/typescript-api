@@ -60,7 +60,7 @@ jobs:
         source: "./"
         target: "~/api"
 
-    - name: Restart server
+    - name: Run or Restart server
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.VPS_HOST }}
@@ -70,4 +70,4 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           cd ~/api
-          node dist/index.js
+          nohup node dist/index.js > output.log 2>&1 &
