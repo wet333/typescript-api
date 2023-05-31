@@ -6,56 +6,31 @@ on:
         branches:
             - main
 
-jobs:
-    build:
-        runs-on: ubuntu-latest
-    
-        steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-    
-        - name: Use Node.js
-          uses: actions/setup-node@v2
-          with:
-            node-version: 18
-    
-        - name: Install Typescript and Dependencies
-          run: npm run pre-build
-
-        - name: Build
-          run: npm run build
-    
-        - name: Archive Production Artifacts
-          uses: actions/upload-artifact@v2
-          with:
-            name: dist
-            path: dist/
-    
+jobs:    
     deploy:
-        needs: build
         runs-on: ubuntu-latest
     
         steps:
-        - name: Download Build Artifacts
-          uses: actions/download-artifact@v2
-          with:
-            name: dist
-    
-        - name: Copy Artifacts over SSH
-          uses: appleboy/scp-action@master
-          with:
-            host: ${{ secrets.VPS_HOST }}
-            username: ${{ secrets.VPS_USER }}
-            password: ${{ secrets.VPS_PASS }}
-            source: "./"
-            target: "~/api"
-    
-        - name: Restart server
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.VPS_HOST }}
-            username: ${{ secrets.VPS_USER }}
-            password: ${{ secrets.VPS_PASS }}
-            script: |
-                cd ~/api
-                node index.js
+            - name: Copy Source Code over SSH
+              uses: appleboy/scp-action@master
+              with:
+                host: ${{ secrets.VPS_HOST }}
+                username: ${{ secrets.VPS_USER }}
+                password: ${{ secrets.VPS_PASS }}
+                source: "./"
+                target: "~/api"
+        
+            - name: Build on Server
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.VPS_HOST }}
+                username: ${{ secrets.VPS_USER }}
+                password: ${{ secrets.VPS_PASS }}
+                script: |
+                  export NVM_DIR=~/.nvm
+                  source ~/.nvm/nvm.sh
+                  cd ~/api
+                  npm install typescript
+                  npm install
+                  npm run build
+                  node dist/index.js
