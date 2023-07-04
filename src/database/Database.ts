@@ -74,7 +74,9 @@ export class Database {
         for ( const migrationFile of pendingMigrations ) {
             const migration: { up: () => Promise<void> } = await import(path.join(__dirname, "migrations", migrationFile));
             
-            await migration.up();
+            if (migration.up) {
+                await migration.up();
+            }
 
             db.runQuery("INSERT INTO migrations_registry (name) VALUES ($1)", [migrationFile.replace(".js", "")]);  // .js porque se compila
 

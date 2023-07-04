@@ -22,10 +22,16 @@ export async function dbStatus (req: Request, res: Response) : Promise<void> {
                     status: "OK"
                 });
             })
-            .catch(() => {
+            .catch((err) => {
                 console.log("Error connecting to the database");
+                const errorDetails = {
+                    name: err.name,
+                    message: err.message,
+                    stack: err.stack
+                };  // TODO: Copy this type of error response in the entire api
                 res.status(200).json({
-                    status: "DOWN"
+                    status: "DOWN",
+                    error: errorDetails,
                 });
             });
         

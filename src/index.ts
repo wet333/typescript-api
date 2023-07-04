@@ -1,7 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session"
-import { router } from "./routes/routes";import { Database } from "./database/Database";
+import { router } from "./routes/routes";
+import { Database } from "./database/Database";
 import { errorMiddleware } from "./middleware/errorHandling";
 import dotenv from "dotenv";
 
